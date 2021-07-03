@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
-const morgan = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
@@ -20,11 +19,6 @@ connectDB();
 
 const app = express();
 
-// Logging
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'))
-}
-
 // handlebars
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs');
@@ -39,14 +33,15 @@ app.use(session({
 // middleware
 
 app.use(passport.initialize());
-app.request(passport.session());
+app.use(passport.session());
 
 // Static
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/', require('./routes/index'));
+app.use('/auth', require('./routes/auth'));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, console.log(`App started at PORT: ${PORT}`));
+app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} on PORT: ${PORT}`)); 
