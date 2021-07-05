@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 const passport = require('passport');
+const mongoose = require('mongoose');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const exphbs = require('express-handlebars');
 const connectDB = require('./config/db');
 
@@ -17,7 +19,7 @@ require('./config/passport')(passport);
 //Connect to Database
 connectDB();
 
-const app = express();
+const app = express(); 
 
 // handlebars
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
@@ -27,7 +29,8 @@ app.set('view engine', '.hbs');
 app.use(session({
   secret: 'tanzania',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
 
 // middleware
