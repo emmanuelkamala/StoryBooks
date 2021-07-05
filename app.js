@@ -21,6 +21,10 @@ connectDB();
 
 const app = express(); 
 
+// Body parser
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json());
+
 // handlebars
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs');
