@@ -26,10 +26,15 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 
 // Handlebars helpers
-const { formatDate, truncate, stripTags, editIcon } = require('./helpers/hbs');
+const { formatDate, truncate, stripTags, editIcon, select } = require('./helpers/hbs');
 
 // handlebars
-app.engine('.hbs', exphbs({helpers: {formatDate, stripTags, truncate, editIcon},
+app.engine('.hbs', exphbs({helpers: {formatDate, 
+                                     stripTags, 
+                                     truncate, 
+                                     editIcon, 
+                                     select
+                                    },
                            defaultLayout: 'main', 
                            extname: '.hbs'
                           })
