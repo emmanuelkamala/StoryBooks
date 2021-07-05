@@ -26,10 +26,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 
 // Handlebars helpers
-const { formatDate } = require('./helpers/hbs');
+const { formatDate, truncate, stripTags, editIcon } = require('./helpers/hbs');
 
 // handlebars
-app.engine('.hbs', exphbs({helpers: {formatDate,},
+app.engine('.hbs', exphbs({helpers: {formatDate, stripTags, truncate, editIcon},
                            defaultLayout: 'main', 
                            extname: '.hbs'
                           })
@@ -48,6 +48,12 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Set global variable
+app.use((req, res, next)=> {
+  res.locals.user = req.user || null
+  next()
+})
 
 // Static
 app.use(express.static(path.join(__dirname, 'public')));
